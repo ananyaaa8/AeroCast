@@ -1,0 +1,68 @@
+#root {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.weather-header {
+  margin-bottom: 2rem;
+}
+
+.weather-header h2 {
+  font-size: 2.5rem;
+  color: #3498db;
+  margin-bottom: 0.5rem;
+}
+
+.weather-header p {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(52, 152, 219, 0.3);
+  border-radius: 50%;
+  border-top-color: #3498db;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.forecast-container {
+  margin-top: 2rem;
+}
+
+.temperature-display {
+  font-size: 3rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0.5rem 0;
+}
+
+.weather-condition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
