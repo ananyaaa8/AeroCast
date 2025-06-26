@@ -7,21 +7,26 @@ const ScrollBox = styled(Box)({
   overflowX: 'auto',
   gap: '1rem',
   paddingBottom: '1rem',
+  paddingTop: '1rem',
   '&::-webkit-scrollbar': {
-    height: '6px',
+    height: '8px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: 'transparent',
   },
   '&::-webkit-scrollbar-thumb': {
-    background: '#6b21a8',
+    backgroundColor: '#425F7B',
     borderRadius: '10px',
   },
 });
+
 
 export default function HourlyForecast({ hours, unit }) {
   if (!hours || hours.length === 0) return null;
 
   return (
     <Box mt={4}>
-      <Typography variant="h5" gutterBottom>Hourly Forecast</Typography>
+      <Typography variant="h5" gutterBottom sx={{fontWeight: 'bolder'}}>Hourly Forecast</Typography>
       <ScrollBox>
         {hours.map((item, index) => (
           <Card key={index} sx={{ minWidth: 100, backgroundColor: 'rgba(255,255,255,0.05)', textAlign: 'center' }}>

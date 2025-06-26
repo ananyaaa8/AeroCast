@@ -1,15 +1,28 @@
+
+
 import { useState, useEffect } from 'react';
-import { getCurrentWeather, getForecast, getHourlyForecast } from '../services/weatherApi';
+import {
+  getCurrentWeather,
+  getForecast,
+  getHourlyForecast,
+  getAQI,
+} from '../services/weatherApi';
 
 export const useWeather = (defaultCity = 'New Delhi', unit = 'metric') => {
   const [weatherInfo, setWeatherInfo] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [hourly, setHourly] = useState([]);
+  const [aqi, setAqi] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [recentCities, setRecentCities] = useState([]);
 
-  const updateInfo = async ({ city }) => {
+  const updateInfo = async ({ city, resetError = false }) => {
+    if (resetError) {
+      setError(null);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -17,10 +30,13 @@ export const useWeather = (defaultCity = 'New Delhi', unit = 'metric') => {
       const weather = await getCurrentWeather(city, unit);
       const forecastData = await getForecast(city, unit);
       const hourlyData = await getHourlyForecast(city, unit);
+       const aqiData = await getAQI(weather.coord.lat, weather.coord.lon);
 
       setWeatherInfo(weather);
-      setForecast(forecastData);
-      setHourly(hourlyData);
+      setForecast(forecastData || []);
+      setHourly(hourlyData || []);
+      setAqi(aqiData);
+
 
       const history = JSON.parse(localStorage.getItem('weather_history')) || [];
       const newHistory = [city, ...history.filter(c => c !== city)].slice(0, 5);
@@ -28,9 +44,20 @@ export const useWeather = (defaultCity = 'New Delhi', unit = 'metric') => {
       setRecentCities(newHistory);
     } catch (err) {
       setError(err.message || 'Error fetching weather data');
+
+      // Auto-dismiss after 3 seconds
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
     } finally {
       setLoading(false);
     }
+  };
+
+
+  const clearRecentCities = () => {
+    localStorage.removeItem('weather_history');
+    setRecentCities([]);
   };
 
   useEffect(() => {
@@ -44,9 +71,11 @@ export const useWeather = (defaultCity = 'New Delhi', unit = 'metric') => {
     weatherInfo,
     forecast,
     hourly,
+    aqi,
     loading,
     error,
     updateInfo,
     recentCities,
+    clearRecentCities,
   };
 };

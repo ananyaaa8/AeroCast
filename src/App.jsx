@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import WeatherApp from './pages/WeatherApp';
 import App2 from './App2';
 import NotFound from './pages/NotFound';
+import './App.css'; 
+
 
 export default function App() {
   useEffect(() => {

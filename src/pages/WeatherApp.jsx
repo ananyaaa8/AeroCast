@@ -1,19 +1,29 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
   CircularProgress,
   Chip,
   Button,
-  Stack,
+  Fade,
 } from '@mui/material';
-
 import InfoBox from '../components/InfoBox';
 import SearchBox from '../components/SearchBox';
 import ForecastBox from '../components/ForecastBox';
 import UnitToggle from '../components/UnitToggle';
 import { useWeather } from '../hooks/useWeather';
+import HourlyForecast from '../components/HourlyForecast';
+import AQIBox from '../components/AQIBox';
+
+const getBackgroundClass = (weatherCode) => {
+  if (!weatherCode) return '';
+  if (weatherCode.startsWith('2')) return 'stormy-bg';
+  if (weatherCode.startsWith('3') || weatherCode.startsWith('5')) return 'rainy-bg';
+  if (weatherCode.startsWith('6')) return 'snowy-bg';
+  if (weatherCode.startsWith('7')) return 'foggy-bg';
+  if (weatherCode === '800') return 'clear-bg';
+  return 'cloudy-bg';
+};
 
 export default function WeatherApp() {
   const [unit, setUnit] = useState('metric');
@@ -24,117 +34,156 @@ export default function WeatherApp() {
     hourly,
     loading,
     error,
+    aqi,
     updateInfo,
     recentCities,
+    clearRecentCities,
   } = useWeather('New Delhi', unit);
 
-  const clearHistory = () => {
-    localStorage.removeItem('weather_history');
-    window.location.reload();
-  };
+  // Auto-dismiss error
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        updateInfo({ city: '', resetError: true });
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
-    <Box
-      className="weather-app"
+    <Box className={`weather-app ${getBackgroundClass(weatherInfo?.weatherCode)}`}
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#1e293b',
         px: 2,
         py: 4,
+        minHeight: '100vh',
+        backgroundColor: '#0f172a',
       }}
     >
       <Box
         sx={{
           width: '100%',
-          maxWidth: 800,
-          backgroundColor: '#27374D',
-          borderRadius: 3,
+          maxWidth: 750,
+          backgroundColor: '#1e293b',
+          borderRadius: 4,
           p: 3,
+          boxShadow: '0px 0px 20px rgba(0,0,0,0.4)',
         }}
       >
-        {/* Header */}
-        <Box className="weather-header" sx={{ textAlign: 'center', mb: 3 }}>
-          <Typography variant="h3"       
-            color="white"
-            gutterBottom
-            sx={{ fontWeight: 700 }}>
+        <Box className="weather-header" sx={{ textAlign: 'center', mb: 2 }}>
+          <Typography variant="h3" sx={{ fontWeight: 700, color: 'white' }}>
             Weather Forecast
           </Typography>
-          <Typography variant="subtitle1" color="gray">
+          <Typography variant="subtitle1" color="text.secondary">
             Get real-time weather updates
           </Typography>
         </Box>
 
-        {/* Search Box */}
         <SearchBox updateInfo={updateInfo} loading={loading} />
 
-        {/* Unit Toggle */}
         <UnitToggle unit={unit} setUnit={setUnit} />
+
+        {/* Flash Error Box */}
+        {error && (
+          <Fade in={!!error}>
+            <Box
+              sx={{
+                mt: 2,
+                mb: 3,
+                px: 3,
+                py: 2,
+                backgroundColor: '#1e293b',
+                border: '1px solid #334155',
+                borderRadius: 2,
+                color: '#ffffff',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontWeight: 500,
+              }}
+            >
+              <Typography sx={{ flexGrow: 1 }}>{error}</Typography>
+              <Box
+                component="button"
+                onClick={() => updateInfo({ city: '', resetError: true })}
+                sx={{
+                  ml: 2,
+                  background: 'none',
+                  border: 'none',
+                  color: '#f87171',
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: '#fb7185',
+                  },
+                }}
+              >
+                ×
+              </Box>
+            </Box>
+          </Fade>
+        )}
 
         {/* Recent Cities + Clear Button */}
         {recentCities.length > 0 && (
-          <Box sx={{ mt: 2, mb: 2 }}>
-            <Stack
-              direction="row"
-              spacing={1}
-              flexWrap="wrap"
-              alignItems="center"
-            >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              mb: 3,
+              gap: 1,
+            }}
+          >
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
               {recentCities.map((city, index) => (
                 <Chip
                   key={index}
                   label={city}
                   clickable
+                  color="secondary"
                   onClick={() => updateInfo({ city })}
-                  sx={{
-                    backgroundColor: '#2f3e4e',
-                    color: '#f5f7fa',
-                    '&:hover': { backgroundColor: '#425F7B' },
-                  }}
+                  sx={{ backgroundColor: '#334155', color: 'white' , 
+                    '&:hover': {
+                  transform: 'scale(1.05)',
+                  backgroundColor:'#334155',
+                },}}
                 />
               ))}
-              <Box sx={{ flexGrow: 1 }} />
-              <Button
-                size="small"
-                variant="contained"
-                onClick={clearHistory}
-                sx={{
-                  backgroundColor: '#425F7B',
-                  color: '#f5f7fa',
-                  textTransform: 'none',
-                  '&:hover': { backgroundColor: '#3a4e67' },
-                }}
-              >
-                Clear History
-              </Button>
-            </Stack>
+            </Box>
+            <Button
+              size="small"
+              onClick={clearRecentCities}
+              sx={{
+                color: 'white',
+                border: '1px solid #334155',
+                height: '32px',
+                px: 2,
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                },
+              }}
+            >
+              Clear History
+            </Button>
           </Box>
         )}
 
-        {/* Loading Spinner */}
         {loading && <CircularProgress sx={{ my: 4 }} />}
 
-        {/* Error Message */}
-        {error && (
-          <Typography color="error" sx={{ my: 2 }}>
-            {error}
-          </Typography>
-        )}
-
-        {/* Weather Info + Forecast */}
         {weatherInfo && (
           <>
             <InfoBox info={weatherInfo} unit={unit} />
-            {forecast && <ForecastBox forecast={forecast} unit={unit}  />}
+            {aqi && <AQIBox aqi={aqi} />}
+            {forecast && <ForecastBox forecast={forecast} unit={unit} />}
+            {hourly.length > 0 && <HourlyForecast hours={hourly} unit={unit} />}
+
           </>
         )}
       </Box>
     </Box>
   );
 }
-
-

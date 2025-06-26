@@ -25,7 +25,7 @@ export default function ForecastBox({ forecast, unit }) {
   if (!forecast || forecast.length === 0) return null;
 
   return (
-    <Box mt={2}>
+    <Box sx={{mt:2}} >
       <Typography variant="h5" gutterBottom sx={{fontWeight: 'bolder'}}>
         5-Day Forecast
       </Typography>
