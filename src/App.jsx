@@ -5,13 +5,12 @@ import App2 from './App2';
 import NotFound from './pages/NotFound';
 import './App.css'; 
 
-
 export default function App() {
   useEffect(() => {
-    // Set page title
+   
     document.title = "Weather Forecast App";
 
-    // Set theme color
+
     const metaThemeColor = document.querySelector("meta[name=theme-color]");
     if (metaThemeColor) {
       metaThemeColor.setAttribute("content", "#f5f7fa");

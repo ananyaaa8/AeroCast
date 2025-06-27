@@ -17,7 +17,7 @@ export default function UnitToggle({ unit, setUnit }) {
             backgroundColor: '#888',
           },
           '& .MuiSwitch-track': {
-            backgroundColor: '#888', // default unselected track
+            backgroundColor: '#888', 
           },
         }}
       />

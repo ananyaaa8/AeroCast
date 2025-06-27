@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  background: linear-gradient(135deg, #0a192f, #1e3a8a, #6b21a8);
+  background: linear-gradient(135deg, #96a6bf, #d3d5dd, #e2dee6) !important;
   background-size: 400% 400%;
   animation: bgShift 15s ease infinite;
   color: #e2e8f0;

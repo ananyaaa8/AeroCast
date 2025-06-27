@@ -1,7 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { Box, Typography, Chip, Grid, Button } from '@mui/material';
 import { styled } from '@mui/system';
+import WeatherIcon from './WeatherIcon';
 
 const CardContainer = styled(Box)({
   perspective: '1000px',
@@ -64,6 +64,9 @@ export default function InfoBox({ info, unit }) {
           px: 3,
           py: 2,
           textAlign: 'center',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 1
         }}
       >
         <Typography variant="h4" fontWeight="bold">
@@ -80,7 +83,7 @@ export default function InfoBox({ info, unit }) {
         <Box
           sx={{
             mt: 2,
-            mb:5,
+            mb: 5,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -90,10 +93,12 @@ export default function InfoBox({ info, unit }) {
           <Typography variant="h3" fontWeight="bold">
             {Math.round(info.temp)}{tempUnit}
           </Typography>
-          <Typography sx={{ fontStyle: 'italic', opacity: 0.8 }}>
+
+          <Typography sx={{ fontStyle: 'italic', opacity: 0.8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <WeatherIcon code={info.icon} size={64} />
             {info.weatherDesc}
           </Typography>
-           
+
         </Box>
         <Typography sx={{ opacity: 0.7, mt: 1 }}>
           Feels like: {Math.round(info.feelsLike)}{tempUnit}
@@ -104,12 +109,12 @@ export default function InfoBox({ info, unit }) {
       <CardContainer onClick={() => setFlipped(f => !f)} >
         <FlipCard flipped={flipped}>
           {/* FRONT */}
-          <CardFace sx={{ background: 'linear-gradient(to right,rgb(39, 60, 89),rgb(3, 20, 43))',}}>
+          <CardFace sx={{ background: 'linear-gradient(to right,rgb(39, 60, 89),rgb(3, 20, 43))', }}>
             <Box>
               <Typography variant="subtitle1">Min Temp:</Typography>
               <Chip
                 label={`${Math.round(info.tempMin)}${tempUnit}`}
-                sx={{ fontSize: '1rem', px: 2, py: 1,}}
+                sx={{ fontSize: '1rem', px: 2, py: 1, }}
               />
 
               <Typography mt={2} variant="subtitle1">Pressure:</Typography>
@@ -135,12 +140,12 @@ export default function InfoBox({ info, unit }) {
           </CardFace>
 
           {/* BACK */}
-          <CardFace back sx={{ background: 'linear-gradient(to right,rgb(39, 60, 89),rgb(3, 20, 43))',}}>
+          <CardFace back sx={{ background: 'linear-gradient(to right,rgb(39, 60, 89),rgb(3, 20, 43))', }}>
             <Box>
               <Typography variant="subtitle1">Max Temp:</Typography>
               <Chip
                 label={`${Math.round(info.tempMax)}${tempUnit}`}
-                sx={{ fontSize: '1rem', px: 2, py: 1}}
+                sx={{ fontSize: '1rem', px: 2, py: 1 }}
               />
 
               <Typography mt={2} variant="subtitle1">Visibility:</Typography>

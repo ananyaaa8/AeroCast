@@ -1,5 +1,5 @@
 
-const API_KEY = '16b884b5af62e365883093d16103a51e'; // Replace with your actual API key
+const API_KEY = '16b884b5af62e365883093d16103a51e'; 
 
 export const getCurrentWeather = async (city, unit) => {
   const response = await fetch(
@@ -24,6 +24,7 @@ export const getCurrentWeather = async (city, unit) => {
     weatherDesc: data.weather[0].description,
     icon: data.weather[0].icon,
     coord: data.coord,
+    
   };
 };
 
@@ -76,4 +77,24 @@ export const getAQI = async (lat, lon) => {
 
   const data = await response.json();
   return data.list[0];
+};
+
+export const getUvIndex = async (lat, lon) => {
+  const response = await fetch(
+    `https://api.openuv.io/api/v1/uv?lat=${lat}&lng=${lon}`,
+    {
+      headers: {
+        'x-access-token': OPENUV_API_KEY,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    console.error('Failed to fetch UV index:', errorBody);
+    throw new Error('Failed to fetch UV index');
+  }
+
+  const data = await response.json();
+  return data.result.uv; // returns UV index number
 };

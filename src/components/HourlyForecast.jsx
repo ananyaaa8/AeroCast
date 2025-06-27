@@ -26,7 +26,7 @@ export default function HourlyForecast({ hours, unit }) {
 
   return (
     <Box mt={4}>
-      <Typography variant="h5" gutterBottom sx={{fontWeight: 'bolder'}}>Hourly Forecast</Typography>
+      <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bolder' }}>Hourly Forecast</Typography>
       <ScrollBox>
         {hours.map((item, index) => (
           <Card key={index} sx={{ minWidth: 100, backgroundColor: 'rgba(255,255,255,0.05)', textAlign: 'center' }}>

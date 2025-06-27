@@ -15,15 +15,6 @@ import { useWeather } from '../hooks/useWeather';
 import HourlyForecast from '../components/HourlyForecast';
 import AQIBox from '../components/AQIBox';
 
-const getBackgroundClass = (weatherCode) => {
-  if (!weatherCode) return '';
-  if (weatherCode.startsWith('2')) return 'stormy-bg';
-  if (weatherCode.startsWith('3') || weatherCode.startsWith('5')) return 'rainy-bg';
-  if (weatherCode.startsWith('6')) return 'snowy-bg';
-  if (weatherCode.startsWith('7')) return 'foggy-bg';
-  if (weatherCode === '800') return 'clear-bg';
-  return 'cloudy-bg';
-};
 
 export default function WeatherApp() {
   const [unit, setUnit] = useState('metric');
@@ -51,14 +42,14 @@ export default function WeatherApp() {
   }, [error]);
 
   return (
-    <Box className={`weather-app ${getBackgroundClass(weatherInfo?.weatherCode)}`}
+    <Box 
       sx={{
         display: 'flex',
         justifyContent: 'center',
         px: 2,
         py: 4,
         minHeight: '100vh',
-        backgroundColor: '#0f172a',
+        backgroundColor: 'linear-gradient(160deg,rgb(124, 124, 152),rgb(143, 137, 147))',
       }}
     >
       <Box
@@ -178,6 +169,8 @@ export default function WeatherApp() {
           <>
             <InfoBox info={weatherInfo} unit={unit} />
             {aqi && <AQIBox aqi={aqi} />}
+          
+           
             {forecast && <ForecastBox forecast={forecast} unit={unit} />}
             {hourly.length > 0 && <HourlyForecast hours={hourly} unit={unit} />}
 

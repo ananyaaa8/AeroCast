@@ -1,4 +1,3 @@
-
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import { fontWeight, styled } from '@mui/system';
 import WeatherIcon from './WeatherIcon';
@@ -25,8 +24,8 @@ export default function ForecastBox({ forecast, unit }) {
   if (!forecast || forecast.length === 0) return null;
 
   return (
-    <Box sx={{mt:2}} >
-      <Typography variant="h5" gutterBottom sx={{fontWeight: 'bolder'}}>
+    <Box sx={{ mt: 2 }} >
+      <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bolder' }}>
         5-Day Forecast
       </Typography>
       <ScrollBox>
