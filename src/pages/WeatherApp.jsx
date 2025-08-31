@@ -64,7 +64,7 @@ export default function WeatherApp() {
       >
         <Box className="weather-header" sx={{ textAlign: 'center', mb: 2 }}>
           <Typography variant="h3" sx={{ fontWeight: 700, color: 'white' }}>
-            Weather Forecast
+           AeroCast
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
             Get real-time weather updates

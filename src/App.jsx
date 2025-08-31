@@ -8,7 +8,7 @@ import './App.css';
 export default function App() {
   useEffect(() => {
    
-    document.title = "Weather Forecast App";
+    document.title = "AeroCast";
 
 
     const metaThemeColor = document.querySelector("meta[name=theme-color]");
