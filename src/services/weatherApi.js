@@ -1,9 +1,9 @@
 
-const API_KEY = '16b884b5af62e365883093d16103a51e'; 
+const key = import.meta.env.VITE_API_KEY
 
 export const getCurrentWeather = async (city, unit) => {
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${API_KEY}`
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${key}`
   );
   if (!response.ok) throw new Error('City not found');
 
@@ -24,13 +24,13 @@ export const getCurrentWeather = async (city, unit) => {
     weatherDesc: data.weather[0].description,
     icon: data.weather[0].icon,
     coord: data.coord,
-    
+
   };
 };
 
 export const getForecast = async (city, unit) => {
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=${unit}&appid=${API_KEY}`
+    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=${unit}&appid=${key}`
   );
   if (!response.ok) throw new Error('Failed to fetch forecast');
   const data = await response.json();
@@ -53,7 +53,7 @@ export const getForecast = async (city, unit) => {
 
 export const getHourlyForecast = async (city, unit) => {
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=${unit}&appid=${API_KEY}`
+    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=${unit}&appid=${key}`
   );
   if (!response.ok) throw new Error('Failed to fetch hourly forecast');
 
@@ -71,7 +71,7 @@ export const getHourlyForecast = async (city, unit) => {
 
 export const getAQI = async (lat, lon) => {
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+    `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${key}`
   );
   if (!response.ok) throw new Error('Failed to fetch AQI data');
 
